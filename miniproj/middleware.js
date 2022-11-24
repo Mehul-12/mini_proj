@@ -18,7 +18,7 @@ module.exports.isLoggedIn = async (req, res, next) => {
     }  
     next();
   } catch (error) {
-    res.status(401).json('Unauthorizes: No token provided');
-    console.log(error);
+    res.status(401).json('Unauthorized: No token provided');
+    // console.log(error);
   }
 };
