@@ -24,18 +24,6 @@ const UserSchema=new Schema({
     type: Boolean,
     required: true,
     default: false
-  },
-  followers: [{
-    type:Schema.Types.ObjectId,
-    ref:'User'
-  }],
-  following:[{
-    type:Schema.Types.ObjectId,
-    ref:'User'
-  }],
-  bookmark:{
-    type:Schema.Types.ObjectId,
-    ref:'Post'
   }
 });
 

@@ -31,21 +31,10 @@
 // app.use(express.static(path.join(__dirname,'public')))
 
 
-// app.get('/')
-// app.use('/',userRoutes)
 
-// app.get('/',(req,res)=>{
-//   res.render('home')
-// }) 
-// app.listen(8080,()=>{
-//   console.log('serving on the port')
-// })  
-
-// if (process.env.NODE_ENV !== "production") {
-//   require('dotenv').config();
-// }
-
-require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require('dotenv').config();
+}
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -55,8 +44,6 @@ const bodyParser = require('body-parser');
 const dbUrl = process.env.DB_URL;
 
 const userRoutes = require('./routes/users');
-// const postRoutes=require('./routes/posts');
-// const commentRoutes=require('./routes/comments');
 const {spawn} = require('child_process');
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
