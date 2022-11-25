@@ -1,37 +1,3 @@
-// const express=require('express');
-// const path=require('path')
-// const mongoose=require('mongoose')
-// const ejsMate=require('ejs-mate')
-// const methodOverride=require('method-override');
-// //const catchAsync=require('./utils/catchAsync')
-// //const session=require('express-session')
-
-// const userRoutes=require('./routes/users')
-
-// const connection_url =
-//     "mongodb+srv://mehul:mehul@cluster0.vgrppay.mongodb.net/?retryWrites=true&w=majority";
-//     mongoose.connect(connection_url, {
-// });
-
-// const db = mongoose.connection;
-// db.once("open", () => {
-//   console.log("DB connected");
-// })
-
-// console.log(`MongoDB Connected`);
-
-// const app=express();
-
-// app.engine('ejs',ejsMate)
-// app.set('view engine','ejs')
-// app.set('views',path.join(__dirname,'views'))
-
-// app.use(express.urlencoded({extended:true}))
-// app.use(methodOverride('_method'))
-// app.use(express.static(path.join(__dirname,'public')))
-
-
-
 if (process.env.NODE_ENV !== "production") {
   require('dotenv').config();
 }
@@ -67,11 +33,35 @@ app.use(bodyParser.json())
 app.use(cors());
 
 app.use('/', userRoutes);
-// app.use('/', postRoutes);
-// app.use('/', commentRoutes);
 app.get('/',(req,res)=>{
     res.send("Hi")
-}) 
+});
+app.get('/xyz', (req, res) => {
+  const { runstr } = req.body;
+  try{var dataToSend;
+      var args= ['./Mini_3/main.py'];
+      var arr = runstr.split(" ");
+      arg=args.concat(arr);
+      // console.log(args);
+      // res.send("hello");
+      // ['main.py','bnr', 'lgr', 'saga', 'l1', '3']
+      const python = spawn('python', arg);
+      // console.log(arg)
+      python.stdout.on('data', function (data) {
+       console.log('Pipe data from python script ...');
+       dataToSend = data.toString();
+      });
+      python.on('close', (code) => {
+        console.log(`child process close all stdio with code ${code}`);
+        res.send(dataToSend)
+      });
+  }
+ catch (error) {
+  res.status(500).json({ message: "No args posted" }); 
+}
+  
+}); 
+
 
 const port= 3000
 app.listen(port, () => {
