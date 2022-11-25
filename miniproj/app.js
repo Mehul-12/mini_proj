@@ -39,7 +39,7 @@ app.get('/',(req,res)=>{
 app.get('/xyz', (req, res) => {
   const { runstr } = req.body;
   try{var dataToSend;
-      var args= ['./Mini_3/main.py'];
+      var args= ['main.py'];
       var arr = runstr.split(" ");
       arg=args.concat(arr);
       // console.log(args);
