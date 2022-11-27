@@ -49,6 +49,13 @@ module.exports.getUser = async(req, res, next) => {
     const { id } = req.params;
     
     const user = await User.findById(id);
+    user.searchHistory.sort((a, b) => {
+      if(a.testAcc !== b.testAcc)
+      return b.testAcc - a.testAcc;
+      else
+      return b.trainAcc - a.trainAcc;
+
+    });
     res.json(user);
     }
     catch (error) {

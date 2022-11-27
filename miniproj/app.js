@@ -89,10 +89,10 @@ app.post('/xyz',isLoggedIn, async(req, res) => {
         });
         obj['trainingAcc']=arr1[0];
         obj['testAcc']=arr1[1];
-        obj['fileTestConfMat']= `${namefile}_test_conf_mat.png`;
-        obj['fileTestClfRep']= `${namefile}_test_clf_rep.png`;        
-        obj['fileTrainConfMat']= `${namefile}_train_conf_mat.png`;
-        obj['fileTrainClfRep']= `${namefile}_train_clf_rep.png`;
+        obj['fileTestConfMat']= `http://localhost:3001/${namefile}_test_conf_mat.png`;
+        obj['fileTestClfRep']= `http://localhost:3001/${namefile}_test_clf_rep.png`;        
+        obj['fileTrainConfMat']= `http://localhost:3001/${namefile}_training_conf_mat.png`;
+        obj['fileTrainClfRep']= `http://localhost:3001/${namefile}_training_clf_rep.png`;
         founduser.searchHistory.push(obj);
         await founduser.save();
         res.send(obj);
