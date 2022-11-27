@@ -31,7 +31,7 @@ db.once("open", () => {
 const app = express();
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }))
-
+app.use(express.static(__dirname + '/uploads'));
 // parse application/json
 app.use(bodyParser.json())
 app.use(cors());
@@ -40,7 +40,7 @@ app.use('/', userRoutes);
 app.get('/',(req,res)=>{
     res.send("Hi")
 });
-app.get('/xyz',isLoggedIn, (req, res) => {
+app.post('/xyz',isLoggedIn, (req, res) => {
   const { runstr } = req.body;
   const userid=req.user._id;
   try{var dataToSend;
