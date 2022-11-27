@@ -24,7 +24,18 @@ const UserSchema=new Schema({
     type: Boolean,
     required: true,
     default: false
-  }
+  },
+  searchHistory:[
+    {
+      searchQuery: String,
+      trainingAcc:String,
+      testAcc:String,
+      fileTestClfRep:String,
+      fileTestConfMat:String,
+      fileTrainClfRep:String,
+      fileTrainConfMat:String
+    }
+  ]
 });
 
 module.exports=mongoose.model('User',UserSchema)

@@ -40,14 +40,17 @@ app.use('/', userRoutes);
 app.get('/',(req,res)=>{
     res.send("Hi")
 });
-app.post('/xyz',isLoggedIn, (req, res) => {
+app.post('/xyz',isLoggedIn, async(req, res) => {
   const { runstr } = req.body;
   const userid=req.user._id;
+  const founduser = await User.findById(userid);
   try{var dataToSend;
       var args= ['main.py'];
       var arr = runstr.split(" ");
       arg=args.concat(arr);
       let namefile=userid+"-"+Date.now().toString();
+      const obj={};
+      obj['searchQuery']=runstr;
       // console.log(args);
       // res.send("hello");
       // ['main.py','bnr', 'lgr', 'saga', 'l1', '3']
@@ -57,7 +60,8 @@ app.post('/xyz',isLoggedIn, (req, res) => {
        console.log('Pipe data from python script ...');
        dataToSend = data.toString();
       });
-      python.on('close', (code) => {
+      python.on('close', async(code) => {
+        var arr1 = dataToSend.split(" ");
         console.log(`child process close all stdio with code ${code}`);
         let src1 = "test_clf_rep.png";
         let dest1 = `uploads/${namefile}_test_clf_rep.png`;
@@ -83,7 +87,15 @@ app.post('/xyz',isLoggedIn, (req, res) => {
           if (err) return console.log(err);
           console.log(`File successfully moved!!`);
         });
-        res.send(dataToSend)
+        obj['trainingAcc']=arr1[0];
+        obj['testAcc']=arr1[1];
+        obj['fileTestConfMat']= `${namefile}_test_conf_mat.png`;
+        obj['fileTestClfRep']= `${namefile}_test_clf_rep.png`;        
+        obj['fileTrainConfMat']= `${namefile}_train_conf_mat.png`;
+        obj['fileTrainClfRep']= `${namefile}_train_clf_rep.png`;
+        founduser.searchHistory.push(obj);
+        await founduser.save();
+        res.send(founduser);
       });
   }
  catch (error) {
