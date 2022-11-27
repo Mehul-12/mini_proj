@@ -95,7 +95,7 @@ app.post('/xyz',isLoggedIn, async(req, res) => {
         obj['fileTrainClfRep']= `${namefile}_train_clf_rep.png`;
         founduser.searchHistory.push(obj);
         await founduser.save();
-        res.send(founduser);
+        res.send(obj);
       });
   }
  catch (error) {
@@ -105,7 +105,7 @@ app.post('/xyz',isLoggedIn, async(req, res) => {
 }); 
 
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`serving on the port ${PORT}`);
 })
