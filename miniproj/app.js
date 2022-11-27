@@ -105,7 +105,7 @@ app.post('/xyz',isLoggedIn, async(req, res) => {
 }); 
 
 
-const port= 3000
-app.listen(port, () => {
-  console.log(`serving on the port ${port}`);
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log(`serving on the port ${PORT}`);
 })
