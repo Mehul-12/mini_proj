@@ -4,17 +4,32 @@
 # In[1]:
 
 
-from IDS_Training_Testing import *
-from IDS_Bin_Class_Train_Test import *
+#from IDS_Training_Testing import *
+#from IDS_Bin_Class_Train_Test import *
+import numpy as np
+import pandas as pd
+from sklearn.svm import SVC 
+from sklearn.naive_bayes import BernoulliNB 
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn import tree
+from sklearn.linear_model import LogisticRegression
+from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import svm
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.neural_network import MLPClassifier
 import sys
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 # In[3]:
 
 
-print("Choose type of classification: ")
-print("1. Binary Classification")
-print("2. Multiclass Classification")
+#print("Choose type of classification: ")
+#print("1. Binary Classification")
+#print("2. Multiclass Classification")
 
 train_data=None
 test_data=None
@@ -30,7 +45,7 @@ X_test=test_data.iloc[:, 1:-1]
 y_train=train_data.iloc[:, -1]
 y_test=test_data.iloc[:, -1]
 
-print("Select supervised-learning model:")
+#print("Select supervised-learning model:")
 models=[]
 models.append("Logistic Regression Classifier")
 models.append("Random Forest Classifier")
@@ -41,13 +56,13 @@ models.append("ANN Classifier")
 
 cnt=1
 for i in models:
-    print(cnt, i)
+    #print(cnt, i)
     cnt=cnt+1
 
 #model_num = input()
 model_name=(sys.argv[2])
 
-print("Training ", model_name)
+#print("Training ", model_name)
 #print("Hyperparameter Selection: ")
 
 y_pred_train=None
@@ -137,7 +152,15 @@ if model_name=="nvb":
     else:
         clf=GaussianNB()
     """
-    clf=sys.argv[3]
+    cl=sys.argv[3]
+    #clf=None
+    if cl=="BernoulliNB":
+        clf=BernoulliNB()
+    elif cl=="MultinomialNB":
+        clf=MultinomialNB()
+    else:
+        clf=GaussianNB()
+    #clf=sys.argv[3]
 
 
 
@@ -180,30 +203,55 @@ clf.fit(X_train, y_train)
 y_train_pred=clf.predict(X_train)
 accuracy=metrics.accuracy_score(y_train, y_train_pred)
 confusion_matrix = metrics.confusion_matrix(y_train, y_train_pred)
-classification = metrics.classification_report(y_train, y_train_pred)
-print()
-print('==============================  Model performance on training data ==============================')
-print()
-print ("Training Accuracy:" "\n", accuracy)
-print()
-print("Confusion matrix for training data:" "\n", confusion_matrix)
-print()
-print("Classification report for training data:" "\n", classification) 
-print()
+classification = metrics.classification_report(y_train, y_train_pred, output_dict=True)
+#print()
+#print('==============================  Model performance on training data ==============================')
+#print()
+accuracy=round(accuracy*100, 3)
+#print (accuracy)
+#print()
+#print("Confusion matrix for training data:" "\n", confusion_matrix)
+train_conf_mat=sns.heatmap(confusion_matrix, annot=True,  fmt='g')
+#plt.show()
+fig = train_conf_mat.get_figure()
+fig.savefig("training_conf_mat.png")
+fig.get_figure().clf()
+#plt.savefig('training_conf_mat.png')
+#print()
+#print("Classification report for training data:" "\n", classification) 
+train_clf_rep=sns.heatmap(pd.DataFrame(classification).iloc[:-1, :].T, annot=True)
+fig1=train_clf_rep.get_figure()
+fig1.savefig("training_clf_rep.png")
+fig1.get_figure().clf()
+#plt.show()
+#plt.savefig('training_cf_rep.png')
+#print()
 
 y_pred_test=clf.predict(X_test)
 #test_acc=clf.score(X_test, y_pred_test)
 test_acc=metrics.accuracy_score(y_test, y_pred_test)
 cnf_mat_test=metrics.confusion_matrix(y_test, y_pred_test)
-clf_report=metrics.classification_report(y_test, y_pred_test)
-print('==============================  Model performance on testing data ==============================')
-
-print()
-print ("Testing Accuracy:" "\n", test_acc)
-print()
-print("Confusion matrix for testing data:" "\n", cnf_mat_test)
-print()
-print("Classification report for testing data:" "\n", clf_report)
+clf_report=metrics.classification_report(y_test, y_pred_test, output_dict=True)
+#print('==============================  Model performance on testing data ==============================')
+test_acc=round(test_acc*100, 3)
+#print()
+#print ("Testing Accuracy:" "\n", test_acc)
+#print()
+#print("Confusion matrix for testing data:" "\n", cnf_mat_test)
+test_conf_mat=sns.heatmap(cnf_mat_test, annot=True,  fmt='g')
+fig2=test_conf_mat.get_figure()
+fig2.savefig("test_conf_mat.png")
+fig2.get_figure().clf()
+#plt.show()
+#plt.savefig('testing_conf_mat.png')
+print(accuracy, test_acc)
+#print("Classification report for testing data:" "\n", clf_report)
+test_clf_rep=sns.heatmap(pd.DataFrame(clf_report).iloc[:-1, :].T, annot=True)
+fig3=test_clf_rep.get_figure()
+fig3.savefig("test_clf_rep.png")
+fig3.get_figure().clf()
+#plt.show()
+#plt.savefig('testing_cf_rep.png')
 
 
 

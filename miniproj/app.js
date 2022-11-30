@@ -99,7 +99,8 @@ app.post('/xyz',isLoggedIn, async(req, res) => {
       });
   }
  catch (error) {
-  res.status(500).json({ message: "No args posted" }); 
+  res.status(500).json({ message: "No args posted" });
+  console.log(error); 
 }
   
 }); 

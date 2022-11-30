@@ -152,7 +152,15 @@ if model_name=="nvb":
     else:
         clf=GaussianNB()
     """
-    clf=sys.argv[3]
+    cl=sys.argv[3]
+    #clf=None
+    if cl=="BernoulliNB":
+        clf=BernoulliNB()
+    elif cl=="MultinomialNB":
+        clf=MultinomialNB()
+    else:
+        clf=GaussianNB()
+    #clf=sys.argv[3]
 
 
 
